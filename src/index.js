@@ -1,11 +1,10 @@
 const express = require('express')
+const router = require('./router')
 
 const app = express()
 const { PORT } = process.env
 
-app.get('/', (request, response) => {
-  response.send('Hello World!')
-})
+app.use('/', router)
 
 app.listen(PORT || 3000, function () {
   let { address, port } = this.address()
