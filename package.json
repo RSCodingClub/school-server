@@ -1,0 +1,17 @@
+{
+  "name": "school-server",
+  "version": "0.0.1",
+  "description": "A school server to reward school event attendees",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "school",
+    "stuco",
+    "server",
+    "event"
+  ],
+  "author": "Jeffrey Meyer <itotallyrock>",
+  "license": "MIT"
+}
