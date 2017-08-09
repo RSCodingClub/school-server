@@ -3,7 +3,7 @@ const { buildSchema } = require('graphql')
 
 let schema = buildSchema(`
   type Query {
-    hello: String
+    status: String
   }
 `)
 
