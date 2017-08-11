@@ -20,14 +20,12 @@ const redisClient = redis.createClient({
 })
 
 redisClient.on('error', (error) => {
-  // eslint-disable-next-line no-consoles
-  console.error('Redis Error: ', error)
+  log.error('redis', error)
 })
 
 app.use('/', router)
 
 app.listen(PORT || 3000, function () {
   let { address, port } = this.address()
-  // eslint-disable-next-line no-console
   log.info('server', 'listening at %s:%d', address, port)
 })
