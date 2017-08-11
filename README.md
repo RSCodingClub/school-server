@@ -27,7 +27,8 @@ This means
   * Google OAuth2 Certificates
     * We used a cache library to store in memory certificates and remove them after their expiration.  This is the exact intention behind Redis, and we would be missing a huge opportunity by not using it for this.
 * A database will be used to hold long term information
-  * Users being the only major topic
+  * Users
+  * Badges *Image for badge storing is unknown*
 * Permissions will be deeply engrained into GraphQL authorization
   * No more group base authorization.  Each request or mutation will have a permission node associated with it.  For example, to change a users name `user.name.update` & `me.name.update` would be checked.  *Note: these are mock permissions and just an idea and may not be the final implementation*
     * Groups may still be a necessity for easy recognition of permissions as a whole but each user will have their own individual permissions
@@ -74,7 +75,7 @@ Defaults to: `27017`
 ##### MONGODB_DB
 The database to store and retrieve information from.
 
-Detaults to: `school-server`
+Defaults to: `school-server`
 ##### MONGODB_PASSWORD
 The password to authenticate the user `school-server-mongoose`.  This means to correctly use MongoDB you will need to create a database user for the database specified by `MONGODB_DB`.
 ##### REDIS_HOST
