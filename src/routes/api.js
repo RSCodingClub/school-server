@@ -6,7 +6,7 @@ const graphqlHTTP = require('express-graphql')
 const rootSchema = require('../rootSchema')
 
 const GOOGLE_CERTS_URI = 'https://www.googleapis.com/oauth2/v3/certs'
-const { GOOGLE_AUD, NODE_ENV } = process.env
+const { GOOGLE_SUITE_DOMAIN, GOOGLE_AUD, NODE_ENV } = process.env
 
 if (NODE_ENV === 'production' && GOOGLE_AUD == null) {
   throw new Error('GOOGLE_AUD is not set')
@@ -20,13 +20,21 @@ router.use(jwt({
     jwksRequestsPerMinute: 1,
     jwksUri: GOOGLE_CERTS_URI
   }),
+  requestProperty: 'googleUser',
   audience: GOOGLE_AUD,
   issuer: [
     'https://accounts.google.com',
     'accounts.google.com'
   ],
   algorithms: [ 'RS256' ]
-}))
+}), (req, res, next) => {
+  if (GOOGLE_SUITE_DOMAIN != null && req.googleUser.hd !== GOOGLE_SUITE_DOMAIN) {
+    let error = new Error('Invalid Google Google Suite Domain')
+    error.name = 'UnauthorizedError'
+
+    throw error
+  }
+})
 
 router.use((err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
@@ -36,7 +44,7 @@ router.use((err, req, res, next) => {
       }]
     })
   }
-  return next()
+  return next(err)
 })
 
 router.get('/', (request, response) => {
