@@ -19,6 +19,7 @@
     "express-graphql": "^0.6.7",
     "express-jwt": "^5.3.0",
     "graphql": "^0.10.5",
+    "jwks-rsa": "^1.2.0",
     "node-fetch": "^1.7.2",
     "npmlog": "^4.1.2",
     "redis": "^2.7.1"
