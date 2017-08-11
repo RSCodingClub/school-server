@@ -64,6 +64,10 @@ npm run start
 The port the webserver will listen on.
 
 Defaults to: `3000`
+##### GOOGLE_AUD
+Google JWT Audience for your application.
+##### GOOGLE_SUITE_DOMAIN
+Google Suite Domain name to check with.  For exmaple if you only want accounts on the domain school.edu use `school.edu`
 ##### MONGODB_HOST
 The host the current MongoDB server running on.
 
