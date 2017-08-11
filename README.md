@@ -64,6 +64,8 @@ npm run start
 The port the webserver will listen on.
 
 Defaults to: `3000`
+##### GOOGLE_AUD
+Google JWT Audience for your application.
 ##### MONGODB_HOST
 The host the current MongoDB server running on.
 
