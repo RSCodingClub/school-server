@@ -31,9 +31,9 @@ router.use(jwt({
   if (GOOGLE_SUITE_DOMAIN != null && req.googleUser.hd !== GOOGLE_SUITE_DOMAIN) {
     let error = new Error('Invalid Google Google Suite Domain')
     error.name = 'UnauthorizedError'
-
-    throw error
+    return next(error)
   }
+  return next()
 })
 
 router.use((err, req, res, next) => {
