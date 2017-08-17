@@ -56,6 +56,14 @@ const User = class User {
   takeBadge (badgeId) {
     return this.setBadge(badgeId, false)
   }
+  getBadges (encoding = 'base64') {
+    return new Promise((resolve, reject) => {
+      redisClient.get(Buffer.from(`user:${this.id}:badges`), (err, badgesBuffer) => {
+        if (err) return reject(err)
+        return resolve(badgesBuffer.toString(encoding) || '')
+      })
+    })
+  }
 }
 
 module.exports = User
