@@ -13,6 +13,22 @@ const User = class User {
       })
     })
   }
+  getName () {
+    return new Promise((resolve, reject) => {
+      redisClient.hget(`user:${this.id}`, 'name', (err, name) => {
+        if (err) return reject(err)
+        return resolve(name.toString())
+      })
+    })
+  }
+  setName (newName) {
+    return new Promise((resolve, reject) => {
+      redisClient.hset(`user:${this.id}`, 'name', newName.toString().trim(), (err, name) => {
+        if (err) return reject(err)
+        return resolve(name)
+      })
+    })
+  }
 }
 
 module.exports = User
