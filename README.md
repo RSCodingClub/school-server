@@ -96,3 +96,7 @@ The database to store and retrieve information from.
 Defaults to: `0`
 ##### REDIS_PASSWORD
 The password to authorize the use of Redis commands.
+##### REDIS_PREFIX
+The namespace to use for the app (e.g. school-server:local)
+
+Defaults to: `school-server:`
