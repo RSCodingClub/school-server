@@ -17,7 +17,7 @@ router.use(jwt({
   secret: jwksRsa.expressJwtSecret({
     cache: true,
     rateLimit: true,
-    jwksRequestsPerMinute: 1,
+    jwksRequestsPerMinute: 15,
     jwksUri: GOOGLE_CERTS_URI
   }),
   requestProperty: 'googleUser',
@@ -27,7 +27,9 @@ router.use(jwt({
     'accounts.google.com'
   ],
   algorithms: [ 'RS256' ]
-}), (req, res, next) => {
+}))
+
+router.use((req, res, next) => {
   if (GOOGLE_SUITE_DOMAIN != null && req.googleUser.hd !== GOOGLE_SUITE_DOMAIN) {
     let error = new Error('Invalid Google Google Suite Domain')
     error.name = 'UnauthorizedError'
