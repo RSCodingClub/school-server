@@ -4,7 +4,10 @@
   "description": "A school server to reward school event attendees",
   "main": "src/index.js",
   "scripts": {
-    "test": "./node_modules/.bin/eslint ."
+    "start": "node src/index.js",
+    "eslint": "./node_modules/.bin/eslint .",
+    "ava": "./node_modules/.bin/ava",
+    "test": "npm run eslint && npm run ava"
   },
   "keywords": [
     "school",
@@ -30,6 +33,7 @@
   },
   "devDependencies": {
     "eslint": "^4.10.0",
+    "ava": "^0.22.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-node": "^5.2.1",
