@@ -64,6 +64,26 @@ const User = class User {
       })
     })
   }
+  addScore (score) {
+    return new Promise((resolve, reject) => {
+      if (typeof score !== 'number') return reject(new Error('Score must be a number'))
+      redisClient.incrby(`user:${this.id}:score`, score, (err) => {
+        if (err) return reject(err)
+        return resolve()
+      })
+    })
+  }
+  takeScore (score) {
+    return this.addScore(score * -1)
+  }
+  getScore () {
+    return new Promise((resolve, reject) => {
+      redisClient.get(`user:${this.id}:score`, (err, score) => {
+        if (err) return reject(err)
+        return resolve(score || 0)
+      })
+    })
+  }
 }
 
 module.exports = User
