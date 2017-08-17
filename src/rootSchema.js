@@ -7,10 +7,10 @@ let schema = buildSchema(`
   }
 `)
 
-let root = {
+let resolver = {
   // TODO: Return server status
   status: () => 'ok'
 }
 
 module.exports.schema = schema
-module.exports.root = root
+module.exports.resolver = resolver

@@ -3,6 +3,8 @@ const jwksRsa = require('jwks-rsa')
 const { Router } = require('express')
 const graphqlHTTP = require('express-graphql')
 
+const User = require('../classes/User')
+const appEmitter = require('../appEmitter')
 const rootSchema = require('../rootSchema')
 
 const GOOGLE_CERTS_URI = 'https://www.googleapis.com/oauth2/v3/certs'
@@ -17,7 +19,7 @@ router.use(jwt({
   secret: jwksRsa.expressJwtSecret({
     cache: true,
     rateLimit: true,
-    jwksRequestsPerMinute: 1,
+    jwksRequestsPerMinute: 15,
     jwksUri: GOOGLE_CERTS_URI
   }),
   requestProperty: 'googleUser',
@@ -27,13 +29,32 @@ router.use(jwt({
     'accounts.google.com'
   ],
   algorithms: [ 'RS256' ]
-}), (req, res, next) => {
+}))
+
+router.use((req, res, next) => {
   if (GOOGLE_SUITE_DOMAIN != null && req.googleUser.hd !== GOOGLE_SUITE_DOMAIN) {
     let error = new Error('Invalid Google Google Suite Domain')
     error.name = 'UnauthorizedError'
     return next(error)
   }
   return next()
+})
+
+router.use(async (request, response, next) => {
+  if (request.googleUser == null) return next()
+  let { sub: id, name } = request.googleUser
+  request.user = new User(id)
+  try {
+    let registered = await request.user.isRegistered()
+    if (registered) return next()
+
+    // Register user if they don't exist yet
+    appEmitter.emit('user:registered', request.user)
+    await request.user.setName(name)
+    return next()
+  } catch (loginError) {
+    return next(loginError)
+  }
 })
 
 router.use((err, req, res, next) => {
@@ -55,7 +76,7 @@ router.get('/', (request, response) => {
 
 router.use('/graphql', graphqlHTTP({
   schema: rootSchema.schema,
-  rootValue: rootSchema.root,
+  rootValue: rootSchema.resolver,
   graphiql: true
 }))
 
