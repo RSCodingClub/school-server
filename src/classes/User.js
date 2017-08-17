@@ -5,6 +5,7 @@ const amqplib = require('../amqplib')
 
 const User = class User {
   constructor (userId) {
+    if (userId == null) throw new Error('UserId must be defined')
     this.id = userId
     this.amqpChannel = amqplib.getChannel()
   }
