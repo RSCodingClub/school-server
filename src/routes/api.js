@@ -3,6 +3,7 @@ const jwksRsa = require('jwks-rsa')
 const { Router } = require('express')
 const graphqlHTTP = require('express-graphql')
 
+const User = require('../classes/User')
 const rootSchema = require('../rootSchema')
 
 const GOOGLE_CERTS_URI = 'https://www.googleapis.com/oauth2/v3/certs'
@@ -36,6 +37,22 @@ router.use((req, res, next) => {
     return next(error)
   }
   return next()
+})
+
+router.use(async (request, response, next) => {
+  if (request.googleUser == null) return next()
+  let { sub: id, name } = request.googleUser
+  request.user = new User(id)
+  try {
+    let registered = await request.user.isRegistered()
+    if (registered) return next()
+
+    // Register user if they don't exist yet
+    await request.user.setName(name)
+    return next()
+  } catch (loginError) {
+    return next(loginError)
+  }
 })
 
 router.use((err, req, res, next) => {
