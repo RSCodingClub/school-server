@@ -44,7 +44,6 @@ const User = class User {
   hasBadge (badgeId) {
     return new Promise((resolve, reject) => {
       redisClient.bitfield(`user:${this.id}:badges`, 'get', 'u1', badgeId, (err, hasBadge) => {
-        console.log(badgeId, err, hasBadge)
         if (err) return reject(err)
         return resolve(Boolean(hasBadge[0] || 0))
       })
