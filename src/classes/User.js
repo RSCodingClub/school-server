@@ -29,6 +29,33 @@ const User = class User {
       })
     })
   }
+  setBadge (badgeId, hasBadge) {
+    // Force hasBadge to either 0 or 1
+    let bit = Math.max(0, Math.min(1, Number(Boolean(hasBadge || false))))
+    if (isNaN(bit)) bit = 0
+
+    return new Promise((resolve, reject) => {
+      redisClient.bitfield(`user:${this.id}:badges`, 'set', 'u1', badgeId, bit, (err) => {
+        if (err) return reject(err)
+        return resolve()
+      })
+    })
+  }
+  hasBadge (badgeId) {
+    return new Promise((resolve, reject) => {
+      redisClient.bitfield(`user:${this.id}:badges`, 'get', 'u1', badgeId, (err, hasBadge) => {
+        console.log(badgeId, err, hasBadge)
+        if (err) return reject(err)
+        return resolve(Boolean(hasBadge[0] || 0))
+      })
+    })
+  }
+  addBadge (badgeId) {
+    return this.setBadge(badgeId, true)
+  }
+  takeBadge (badgeId) {
+    return this.setBadge(badgeId, false)
+  }
 }
 
 module.exports = User
