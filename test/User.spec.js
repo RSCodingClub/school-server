@@ -1,14 +1,20 @@
 import test from 'ava'
-import User from '../src/classes/User'
+import rewire from 'rewire'
+import redisMock from 'redis-mock'
+const User = rewire('../src/classes/User')
 
-const { TEST_USER_ID } = process.env
+let { TEST_USER_ID } = process.env
 
 test.before(t => {
-  if (TEST_USER_ID == null || TEST_USER_ID === '') throw new Error('TEST_USER_ID must be defined')
+  if (TEST_USER_ID == null || TEST_USER_ID === '') TEST_USER_ID = '1234'
 })
 
 test.beforeEach(t => {
   t.context.user = new User(TEST_USER_ID)
+  // Overwrite redisClient in User to use mock redis
+  User.__set__({
+    redisClient: redisMock.createClient()
+  })
 })
 
 test('User has a constructor', t => {
