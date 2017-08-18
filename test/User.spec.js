@@ -72,4 +72,14 @@ test('User can change score', async t => {
   await Promise.all(addScores)
   let multipliedScore = await user.getScore()
   t.is(multipliedScore, scoreIncrement * scoreMultiplier + scoreIncrement, 'User#getScore returned an unexpected value')
+
+  // Score can be set
+  await user.setScore()
+  score = await user.getScore()
+  t.is(score, 0, 'User#getScore returned an unexpected value')
+
+  // Score can be negative
+  await user.takeScore(scoreIncrement)
+  score = await user.getScore()
+  t.is(score, scoreIncrement * -1, 'User#getScore returned an unexpected value')
 })
