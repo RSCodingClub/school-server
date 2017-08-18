@@ -19,8 +19,29 @@ test.beforeEach(t => {
 
 test('User has a constructor', t => {
   t.true(User.constructor != null, 'Constructor is undefined')
+  t.is(typeof User.constructor, 'function', 'Constructor is not a function')
 })
 
 test('User without id throws error', t => {
   t.throws(() => new User())
+})
+
+test('User has a name', async t => {
+  let { user } = t.context
+  t.true(user.getName != null, 'User#getName is not defined')
+  t.is(typeof user.getName, 'function', 'User#getName is not a function')
+
+  let name = await user.getName()
+  t.is(name, '', 'User#getName returned an unexpected value')
+})
+
+test('User can change name', async t => {
+  let { user } = t.context
+  let newName = 'George Costanza'
+  t.true(user.setName != null, 'User#setName is not defined')
+  t.is(typeof user.setName, 'function', 'User#setName is not a function')
+
+  await user.setName(newName)
+  let name = await user.getName()
+  t.is(name, newName, 'User#getName returned an unexpected value')
 })
