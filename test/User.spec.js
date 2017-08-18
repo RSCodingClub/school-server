@@ -83,3 +83,10 @@ test('User can change score', async t => {
   score = await user.getScore()
   t.is(score, scoreIncrement * -1, 'User#getScore returned an unexpected value')
 })
+
+test('User has badges', async t => {
+  let { user } = t.context
+  let badges = await user.getBadges()
+  t.is(badges, '', 'User#getBadges returned an unexpected value')
+  // NOTE: Redis Mock doesn't have bitfields so we cannot test giving and setting badges
+})
