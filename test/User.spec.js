@@ -45,3 +45,31 @@ test('User can change name', async t => {
   let name = await user.getName()
   t.is(name, newName, 'User#getName returned an unexpected value')
 })
+
+test('User has a score', async t => {
+  let { user } = t.context
+  t.true(user.getScore != null, 'User#getScore is not defined')
+  t.is(typeof user.getScore, 'function', 'User#getScore is not a function')
+
+  let score = await user.getScore()
+  t.is(score, 0, 'User#getScore returned an unexpected value')
+})
+
+test('User can change score', async t => {
+  let { user } = t.context
+  let scoreIncrement = 10
+  let scoreMultiplier = Math.floor(Math.random() * 10 + 1)
+  let addScores = []
+  t.true(user.addScore != null, 'User#addScore is not defined')
+  t.is(typeof user.addScore, 'function', 'User#addScore is not a function')
+
+  await user.addScore(scoreIncrement)
+  let score = await user.getScore()
+  t.is(score, scoreIncrement, 'User#getScore returned an unexpected value')
+
+  // Test adding multiple scores to see if it registers them all
+  for (let index = 0; index < scoreMultiplier; index++) addScores.push(user.addScore(scoreIncrement))
+  await Promise.all(addScores)
+  let multipliedScore = await user.getScore()
+  t.is(multipliedScore, scoreIncrement * scoreMultiplier + scoreIncrement, 'User#getScore returned an unexpected value')
+})
