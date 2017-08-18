@@ -1,4 +1,6 @@
 # School (Student Council) Server
+[![Travis](https://img.shields.io/travis/itotallyrock/school-server.svg?style=flat-square)](https://travis-ci.org/itotallyrock/school-server) [![license](https://img.shields.io/github/license/itotallyrock/school-server.svg?style=flat-square)](https://github.com/itotallyrock/school-server/blob/master/LICENSE) [![David](https://img.shields.io/david/itotallyrock/school-server.svg?style=flat-square)](https://david-dm.org/itotallyrock/school-server)
+
 **Index**
 - [About](#about)
 - [Usage](#usage)
