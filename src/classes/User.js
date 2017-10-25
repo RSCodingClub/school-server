@@ -7,7 +7,7 @@ const User = class User {
   }
   isRegistered () {
     return new Promise((resolve, reject) => {
-      redisClient.exists(`user:${this.id}`, (err, exists) => {
+      redisClient.exists(`user:${this.id}:name`, (err, exists) => {
         if (err) return reject(err)
         return resolve(Boolean(Number(exists)))
       })
@@ -15,7 +15,7 @@ const User = class User {
   }
   getName () {
     return new Promise((resolve, reject) => {
-      redisClient.hget(`user:${this.id}`, 'name', (err, name) => {
+      redisClient.hget(`user:${this.id}:name`, (err, name) => {
         if (err) return reject(err)
         return resolve(name.toString())
       })
@@ -23,19 +23,23 @@ const User = class User {
   }
   setName (newName) {
     return new Promise((resolve, reject) => {
-      redisClient.hset(`user:${this.id}`, 'name', newName.toString().trim(), (err, name) => {
+      redisClient.set(`user:${this.id}:name`, newName.toString().trim(), (err, name) => {
         if (err) return reject(err)
         return resolve(name)
       })
     })
   }
-  setBadge (badgeId, hasBadge) {
-    // Force hasBadge to either 0 or 1
-    let bit = Math.max(0, Math.min(1, Number(Boolean(hasBadge || false))))
-    if (isNaN(bit)) bit = 0
-
+  giveBadge (badgeId) {
     return new Promise((resolve, reject) => {
-      redisClient.bitfield(`user:${this.id}:badges`, 'set', 'u1', badgeId, bit, (err) => {
+      redisClient.sadd(`user:${this.id}:badges`, badgeId, (err) => {
+        if (err) return reject(err)
+        return resolve()
+      })
+    })
+  }
+  takeBadge (badgeId) {
+    return new Promise((resolve, reject) => {
+      redisClient.srem(`user:${this.id}:badges`, badgeId, (err) => {
         if (err) return reject(err)
         return resolve()
       })
@@ -43,43 +47,43 @@ const User = class User {
   }
   hasBadge (badgeId) {
     return new Promise((resolve, reject) => {
-      redisClient.bitfield(`user:${this.id}:badges`, 'get', 'u1', badgeId, (err, hasBadge) => {
+      redisClient.sismember(`user:${this.id}:badges`, badgeId, (err, hasBadge) => {
         if (err) return reject(err)
-        return resolve(Boolean(hasBadge[0] || 0))
+        return resolve(Boolean(hasBadge || 0))
       })
     })
   }
-  addBadge (badgeId) {
-    return this.setBadge(badgeId, true)
-  }
-  takeBadge (badgeId) {
-    return this.setBadge(badgeId, false)
-  }
   getBadges (encoding = 'base64') {
     return new Promise((resolve, reject) => {
-      redisClient.get(Buffer.from(`user:${this.id}:badges`), (err, badgesBuffer) => {
+      redisClient.smembers(`user:${this.id}:badges`, (err, badgesSet) => {
         if (err) return reject(err)
-        return resolve(badgesBuffer.toString(encoding) || '')
+        return resolve(badgesSet || [])
       })
     })
   }
   addScore (score) {
     return new Promise((resolve, reject) => {
-      if (typeof score !== 'number') return reject(new Error('Score must be a number'))
+      if (isNaN(Number(score))) return reject(new Error('Score must be a number'))
       redisClient.incrby(`user:${this.id}:score`, score, (err) => {
         if (err) return reject(err)
         return resolve()
       })
     })
   }
-  takeScore (score) {
-    return this.addScore(score * -1)
+  setScore (score) {
+    return new Promise((resolve, reject) => {
+      if (isNaN(Number(score))) return reject(new Error('Score must be a number'))
+      redisClient.set(`user:${this.id}:score`, score, (err, score) => {
+        if (err) return reject(err)
+        return resolve(Number(score || 0))
+      })
+    })
   }
   getScore () {
     return new Promise((resolve, reject) => {
       redisClient.get(`user:${this.id}:score`, (err, score) => {
         if (err) return reject(err)
-        return resolve(score || 0)
+        return resolve(Number(score || 0))
       })
     })
   }
