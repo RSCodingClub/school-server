@@ -15,20 +15,20 @@
   "author": "Jeffrey Meyer <itotallyrock>",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.15.4",
-    "express-graphql": "^0.6.7",
+    "express": "^4.16.2",
+    "express-graphql": "^0.6.11",
     "express-jwt": "^5.3.0",
-    "graphql": "^0.10.5",
-    "jwks-rsa": "^1.2.0",
+    "graphql": "^0.11.7",
+    "jwks-rsa": "^1.2.1",
     "npmlog": "^4.1.2",
-    "redis": "^2.7.1"
+    "redis": "^2.8.0"
   },
   "devDependencies": {
-    "eslint": "^4.4.1",
+    "eslint": "^4.10.0",
     "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-node": "^5.1.1",
-    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1"
   }
 }
