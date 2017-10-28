@@ -53,11 +53,11 @@ const User = class User {
       })
     })
   }
-  getBadges (encoding = 'base64') {
+  getBadges () {
     return new Promise((resolve, reject) => {
       redisClient.smembers(`user:${this.id}:badges`, (err, badgesSet) => {
         if (err) return reject(err)
-        return resolve(badgesSet || [])
+        return resolve(badgesSet.map(badge => Number(badge)) || [])
       })
     })
   }
