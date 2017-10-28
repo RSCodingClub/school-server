@@ -64,6 +64,8 @@ npm run start
 The port the webserver will listen on.
 
 Defaults to: `3000`
+##### NODE_ENV
+The current Node environment.  Either `development` or `production`.
 ##### GOOGLE_AUD
 Google JWT Audience for your application.
 ##### GOOGLE_SUITE_DOMAIN

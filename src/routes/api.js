@@ -10,7 +10,7 @@ const rootSchema = require('../rootSchema')
 const GOOGLE_CERTS_URI = 'https://www.googleapis.com/oauth2/v3/certs'
 const { GOOGLE_SUITE_DOMAIN, GOOGLE_AUD, NODE_ENV } = process.env
 
-if (NODE_ENV === 'production' && GOOGLE_AUD == null) {
+if (!(NODE_ENV || 'production').startsWith('dev') && GOOGLE_AUD == null) {
   throw new Error('GOOGLE_AUD is not set')
 }
 
