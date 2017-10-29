@@ -1,9 +1,11 @@
 
 const redisClient = require('../redis')
+const amqplib = require('../amqplib')
 
 const User = class User {
   constructor (userId) {
     this.id = userId
+    this.amqpChannel = amqplib.getChannel()
   }
   isRegistered () {
     return new Promise((resolve, reject) => {
