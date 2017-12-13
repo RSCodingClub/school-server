@@ -14,7 +14,8 @@ const User = class User {
     return Boolean(Number(exists))
   }
   async getName () {
-    return promisify(redisClient.get).call(redisClient, `user:${this.id}:name`)
+    let name = await promisify(redisClient.get).call(redisClient, `user:${this.id}:name`)
+    return name || ''
   }
   async setName (newName) {
     await promisify(redisClient.set).call(redisClient, `user:${this.id}:name`, newName.toString().trim())
