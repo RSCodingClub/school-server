@@ -1,5 +1,5 @@
 # School (Student Council) Server
-[![Travis](https://img.shields.io/travis/itotallyrock/school-server.svg?style=flat-square)](https://travis-ci.org/itotallyrock/school-server) [![license](https://img.shields.io/github/license/itotallyrock/school-server.svg?style=flat-square)](https://github.com/itotallyrock/school-server/blob/master/LICENSE) [![David](https://img.shields.io/david/itotallyrock/school-server.svg?style=flat-square)](https://david-dm.org/itotallyrock/school-server)
+[![Travis](https://img.shields.io/travis/RSCodingClub/school-server.svg?style=flat-square)](https://travis-ci.org/RSCodingClub/school-server) [![license](https://img.shields.io/github/license/RSCodingClub/school-server.svg?style=flat-square)](https://github.com/RSCodingClub/school-server/blob/master/LICENSE) [![David](https://img.shields.io/david/RSCodingClub/school-server.svg?style=flat-square)](https://david-dm.org/RSCodingClub/school-server)
 
 **Index**
 - [About](#about)
@@ -48,7 +48,7 @@ With a long todo-list it makes sense to just start fresh rather than piece by pi
 ### Installation
 Installation is simple if you want to use the latest cutting edge version.  Just clone the repo and viola.
 ```bash
-git clone git@github.com:itotallyrock/school-server.git
+git clone git@github.com:RSCodingClub/school-server.git
 ```
 After installation, you need to install dependencies by running
 ```bash
