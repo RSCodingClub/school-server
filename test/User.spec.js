@@ -86,7 +86,10 @@ test('User can change score', async t => {
 
 test('User has badges', async t => {
   let { user } = t.context
+  t.true(user.addScore != null, 'User#addScore is not defined')
+  t.is(typeof user.addScore, 'function', 'User#addScore is not a function')
+
   let badges = await user.getBadges()
-  t.is(badges, '', 'User#getBadges returned an unexpected value')
-  // NOTE: Redis Mock doesn't have bitfields so we cannot test giving and setting badges
+  t.true(badges instanceof Array, 'User#getBadges did not return an Array')
+  t.is(badges.length, 0, 'User#getBadges did not return an Array of size 0')
 })
