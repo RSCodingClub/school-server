@@ -1,4 +1,5 @@
 import test from 'ava'
+import sinon from 'sinon'
 import rewire from 'rewire'
 import redisMock from 'redis-mock'
 const User = rewire('../src/classes/User')
@@ -74,14 +75,22 @@ test('User can change score', async t => {
   t.is(multipliedScore, scoreIncrement * scoreMultiplier + scoreIncrement, 'User#getScore returned an unexpected value')
 
   // Score can be set
-  await user.setScore()
+  await user.setScore(0)
   score = await user.getScore()
   t.is(score, 0, 'User#getScore returned an unexpected value')
 
   // Score can be negative
-  await user.takeScore(scoreIncrement)
+  await user.addScore(-1 * scoreIncrement)
   score = await user.getScore()
   t.is(score, scoreIncrement * -1, 'User#getScore returned an unexpected value')
+
+  // Check that invalid addScore arguments throw error
+  let spy = sinon.spy()
+  await user.addScore().catch(spy)
+  await user.addScore('?').catch(spy)
+  // Should throw since it parses
+  await user.addScore('-1').catch(spy)
+  t.true(spy.calledTwice, 'User#getScore was expected to throw on invalid argument')
 })
 
 test('User has badges', async t => {
