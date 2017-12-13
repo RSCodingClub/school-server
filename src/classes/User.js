@@ -91,6 +91,7 @@ const User = class User {
   }
   async getBadges () {
     let badges = await promisify(redisClient.smembers).call(redisClient, `user:${this.id}:badges`)
+    if (badges == null) return []
     return badges.map(Number)
   }
   async addScore (scoreIncr) {
