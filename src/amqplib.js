@@ -27,6 +27,7 @@ async function getChannel () {
     return channel
   } catch (error) {
     log.error('amqp', error)
+    process.exit(1)
   }
 }
 
