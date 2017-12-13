@@ -1,6 +1,6 @@
 
 const { promisify } = require('util')
-const redisClient = require('../redis')
+let redisClient = require('../redis')
 const amqplib = require('../amqplib')
 
 const User = class User {
