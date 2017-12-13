@@ -4,7 +4,6 @@ const { Router } = require('express')
 const graphqlHTTP = require('express-graphql')
 
 const User = require('../classes/User')
-const appEmitter = require('../appEmitter')
 const rootSchema = require('../rootSchema')
 
 const GOOGLE_CERTS_URI = 'https://www.googleapis.com/oauth2/v3/certs'
@@ -42,15 +41,24 @@ router.use((req, res, next) => {
 
 router.use(async (request, response, next) => {
   if (request.googleUser == null) return next()
-  let { sub: id, name } = request.googleUser
+  let {
+    sub: id,
+    name,
+    email_verified: verifiedEmail,
+    email,
+    picture
+  } = request.googleUser
   request.user = new User(id)
-  try {
-    let registered = await request.user.isRegistered()
-    if (registered) return next()
 
-    // Register user if they don't exist yet
-    appEmitter.emit('user:registered', request.user)
-    await request.user.setName(name)
+  try {
+    // Update or register user
+    let jobs = []
+    if (name != null) jobs.push(request.user.setName(name))
+    if (email != null && verifiedEmail) jobs.push(request.user.setEmail(email))
+    if (picture != null) jobs.push(request.user.setImage(picture))
+
+    await Promise.all(jobs)
+
     return next()
   } catch (loginError) {
     return next(loginError)
