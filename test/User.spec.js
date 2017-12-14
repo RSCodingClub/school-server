@@ -8,14 +8,14 @@ let { TEST_USER_ID } = process.env
 
 test.before(t => {
   if (TEST_USER_ID == null || TEST_USER_ID === '') TEST_USER_ID = '1234'
-})
-
-test.beforeEach(t => {
-  t.context.user = new User(TEST_USER_ID)
   // Overwrite redisClient in User to use mock redis
   User.__set__({
     redisClient: redisMock.createClient()
   })
+})
+
+test.beforeEach(t => {
+  t.context.user = new User(TEST_USER_ID)
 })
 
 test('User has a constructor', t => {
