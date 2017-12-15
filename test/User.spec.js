@@ -113,7 +113,7 @@ test('User can change score', async t => {
   t.true(spy.calledTwice, 'User#getScore was expected to throw on invalid argument')
 })
 
-test('User has badges', async t => {
+test.serial('User has badges', async t => {
   let { user } = t.context
   t.true(user.getBadges != null, 'User#addScore is not defined')
   t.is(typeof user.getBadges, 'function', 'User#addScore is not a function')
