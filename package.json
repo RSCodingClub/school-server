@@ -17,6 +17,11 @@
   ],
   "author": "Jeffrey Meyer <itotallyrock>",
   "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/RSCodingClub/school-server.git"
+  },
   "engines": {
     "node": ">=8.0.0"
   },
