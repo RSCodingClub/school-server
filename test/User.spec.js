@@ -18,6 +18,10 @@ test.beforeEach(t => {
   })
 })
 
+test.afterEach(async t => {
+  await t.context.user.delete()
+})
+
 test('User has a constructor', t => {
   t.true(User.constructor != null, 'Constructor is undefined')
   t.is(typeof User.constructor, 'function', 'Constructor is not a function')

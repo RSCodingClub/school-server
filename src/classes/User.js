@@ -11,6 +11,16 @@ const User = class User {
     this.id = userId
     this.amqpChannel = amqplib.getChannel()
   }
+  async delete () {
+    log.silly('user', 'deleting user(id: %d)', this.id)
+    await promisify(redisClient.del).call(redisClient, `user:${this.id}`)
+
+    let channel = await this.amqpChannel
+    await channel.assertQueue('user:name:updated', { durable: true })
+    channel.sendToQueue('user:deleted', Buffer.from(JSON.stringify({
+      id: this.id
+    })))
+  }
   async isRegistered () {
     log.silly('user', 'checking if user(id: %d) exists', this.id)
     let exists = await promisify(redisClient.exists).call(redisClient, `user:${this.id}:name`)
