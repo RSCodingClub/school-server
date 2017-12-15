@@ -1,5 +1,5 @@
-const log = require('npmlog')
 const redis = require('redis')
+const log = require('./logger')
 
 const {
   REDIS_HOST,

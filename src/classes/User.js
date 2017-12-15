@@ -1,5 +1,6 @@
 
 const { promisify } = require('util')
+const log = require('../logger')
 let redisClient = require('../redis')
 const amqplib = require('../amqplib')
 

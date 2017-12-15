@@ -67,7 +67,7 @@ The port the webserver will listen on.
 
 Defaults to: `3000`
 ##### NODE_ENV
-The current Node environment.  Either `development` or `production`.
+The current Node environment.  Either `development`, `test`, or `production`.
 ##### GOOGLE_AUD
 Google JWT Audience for your application.
 ##### GOOGLE_SUITE_DOMAIN
@@ -104,3 +104,11 @@ The password to authorize the use of Redis commands.
 The namespace to use for the app (e.g. school-server:local)
 
 Defaults to: `school-server:`
+##### LOG_LEVEL
+The level to output log messages.  See [npmlog](https://github.com/npm/npmlog#loglevelprefix-message-)
+##### LOG_PREFIX
+The prefix/heading in front of all logged messages.
+
+Defaults to: `school-server`
+##### LOG_COLOR
+Whether to log output in color if set then, color output is enabled.

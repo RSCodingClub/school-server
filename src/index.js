@@ -1,6 +1,6 @@
-const log = require('npmlog')
 const express = require('express')
 const bodyParser = require('body-parser')
+const log = require('./logger')
 const router = require('./router')
 
 const app = express()

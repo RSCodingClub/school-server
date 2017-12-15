@@ -1,5 +1,5 @@
-const log = require('npmlog')
 const amqplib = require('amqplib')
+const log = require('./logger')
 
 const {
   AMQP_HOST,
