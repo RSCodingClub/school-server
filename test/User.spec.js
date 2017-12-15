@@ -2,24 +2,23 @@ import test from 'ava'
 import sinon from 'sinon'
 import rewire from 'rewire'
 import redisMock from 'redis-mock'
+import { promisify } from 'util'
 const User = rewire('../src/classes/User')
 
 let { TEST_USER_ID } = process.env
 
 test.before(t => {
   if (TEST_USER_ID == null || TEST_USER_ID === '') TEST_USER_ID = '1234'
-})
-
-test.beforeEach(t => {
-  t.context.user = new User(TEST_USER_ID)
-  // Overwrite redisClient in User to use mock redis
   User.__set__({
     redisClient: redisMock.createClient()
   })
 })
 
-test.afterEach(async t => {
-  await t.context.user.delete()
+test.beforeEach(async t => {
+  t.context.user = new User(TEST_USER_ID)
+  // Overwrite redisClient in User to use mock redis
+  let redisClient = User.__get__('redisClient')
+  await promisify(redisClient.flushall).call(redisClient)
 })
 
 test('User has a constructor', t => {
