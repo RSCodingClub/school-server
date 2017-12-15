@@ -30,6 +30,23 @@ test('User without id throws error', t => {
   t.throws(() => new User())
 })
 
+test.serial('User can be deleted', async t => {
+  let { user } = t.context
+  t.true(user.delete != null, 'User#delete is not defined')
+  t.is(typeof user.delete, 'function', 'User#delete is not a function')
+
+  // XXX: Testing delete doesn't work with redis-mock because it doesn't have scan functionality
+  // t.true(user.delete() instanceof Promise, 'User#delete is not a asynchronous')
+
+  // Test that it actually deletes the user from Redis
+  // let name = 'George Costanza'
+  // await user.setName(name)
+  // await user.delete()
+  // let newName = await user.getName()
+  // t.not(newName, name, 'User#delete did not delete the user')
+  // t.is(newName, '', 'User#delete did not delete the user')
+})
+
 test('User has a name', async t => {
   let { user } = t.context
   t.true(user.getName != null, 'User#getName is not defined')
