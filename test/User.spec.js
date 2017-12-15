@@ -95,8 +95,8 @@ test('User can change score', async t => {
 
 test('User has badges', async t => {
   let { user } = t.context
-  t.true(user.addScore != null, 'User#addScore is not defined')
-  t.is(typeof user.addScore, 'function', 'User#addScore is not a function')
+  t.true(user.getBadges != null, 'User#addScore is not defined')
+  t.is(typeof user.getBadges, 'function', 'User#addScore is not a function')
 
   let badges = await user.getBadges()
   t.true(badges instanceof Array, 'User#getBadges did not return an Array')
