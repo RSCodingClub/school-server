@@ -53,6 +53,7 @@ test('User has a name', async t => {
   t.is(typeof user.getName, 'function', 'User#getName is not a function')
 
   let name = await user.getName()
+  t.true(typeof name === 'string', 'User#getName did not return a String')
   t.is(name, '', 'User#getName returned an unexpected value')
 })
 
@@ -62,8 +63,10 @@ test('User can change name', async t => {
   t.true(user.setName != null, 'User#setName is not defined')
   t.is(typeof user.setName, 'function', 'User#setName is not a function')
 
-  await user.setName(newName)
   let name = await user.getName()
+  t.not(name, newName, 'User#getName returned an unexpected value')
+  await user.setName(newName)
+  name = await user.getName()
   t.is(name, newName, 'User#getName returned an unexpected value')
 })
 
@@ -73,6 +76,7 @@ test('User has a score', async t => {
   t.is(typeof user.getScore, 'function', 'User#getScore is not a function')
 
   let score = await user.getScore()
+  t.false(isNaN(score), 'User#getScore returned an unexpected value')
   t.is(score, 0, 'User#getScore returned an unexpected value')
 })
 
@@ -86,13 +90,13 @@ test('User can change score', async t => {
 
   await user.addScore(scoreIncrement)
   let score = await user.getScore()
-  t.is(score, scoreIncrement, 'User#getScore returned an unexpected value')
+  t.is(score, scoreIncrement, 'User#setScore did not increment score')
 
   // Test adding multiple scores to see if it registers them all
   for (let index = 0; index < scoreMultiplier; index++) addScores.push(user.addScore(scoreIncrement))
   await Promise.all(addScores)
   let multipliedScore = await user.getScore()
-  t.is(multipliedScore, scoreIncrement * scoreMultiplier + scoreIncrement, 'User#getScore returned an unexpected value')
+  t.is(multipliedScore, scoreIncrement * scoreMultiplier + scoreIncrement, 'User#addScore failed to add multiple scores')
 
   // Score can be set
   await user.setScore(0)
@@ -102,7 +106,7 @@ test('User can change score', async t => {
   // Score can be negative
   await user.addScore(-1 * scoreIncrement)
   score = await user.getScore()
-  t.is(score, scoreIncrement * -1, 'User#getScore returned an unexpected value')
+  t.is(score, scoreIncrement * -1, 'User#addScore did not decrement score')
 
   // Check that invalid addScore arguments throw error
   let spy = sinon.spy()
