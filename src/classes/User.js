@@ -68,16 +68,18 @@ const User = class User {
 
     return newImage
   }
-  async giveBadge (badgeId) {
+  async giveBadge (badges) {
     log.silly('user', 'giving user(id: %d) badge', this.id)
-    await promisify(redisClient.sadd).call(redisClient, `user:${this.id}:badges`, badgeId)
+    // Force badges to Array
+    if (!(badges instanceof Array)) badges = [ badges ]
+    await promisify(redisClient.sadd).call(redisClient, `user:${this.id}:badges`, ...badges)
 
     let channel = await this.amqpChannel
     await channel.assertQueue('user:badges:updated', { durable: true })
     channel.sendToQueue('user:badges:updated', Buffer.from(JSON.stringify({
       id: this.id,
       removed: [],
-      added: badgeId instanceof Array ? badgeId : [ badgeId ]
+      added: badges
     })))
 
     // NOTE: Maybe return all user badges, or those added
