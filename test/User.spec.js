@@ -122,3 +122,43 @@ test('User has badges', async t => {
   t.true(badges instanceof Array, 'User#getBadges did not return an Array')
   t.is(badges.length, 0, 'User#getBadges did not return an Array of size 0')
 })
+
+test.serial('User can get a badge', async t => {
+  let { user } = t.context
+  t.true(user.giveBadge != null, 'User#giveBadge is not defined')
+  t.is(typeof user.giveBadge, 'function', 'User#giveBadge is not a function')
+
+  let originalBadges = await user.getBadges()
+  await user.giveBadge(4)
+  let badges = await user.getBadges()
+  t.not(originalBadges, badges, 'User#giveBadge did not give badges')
+  t.not(badges.length, originalBadges.length, 'User#giveBadge did not give badges')
+  t.is(badges.length, 1, 'User#giveBadge did not give badges')
+  t.deepEqual(badges, [4], 'User#giveBadge did not give badges')
+})
+
+test.serial('User can get badges', async t => {
+  let { user } = t.context
+
+  let originalBadges = await user.getBadges()
+  await user.giveBadge([4, 8, 9])
+  let badges = await user.getBadges()
+  t.not(originalBadges, badges, 'User#giveBadge did not give badges')
+  t.not(badges.length, originalBadges.length, 'User#giveBadge did not give badges')
+  t.is(badges.length, 3, 'User#giveBadge did not give badges')
+  t.deepEqual(badges, [4, 8, 9], 'User#giveBadge did not give badges')
+})
+
+test.serial('User can lose badges', async t => {
+  let { user } = t.context
+  t.true(user.takeBadge != null, 'User#takeBadge is not defined')
+  t.is(typeof user.takeBadge, 'function', 'User#takeBadge is not a function')
+
+  await user.giveBadge([4, 8, 9])
+  let originalBadges = await user.getBadges()
+  await user.takeBadge(4)
+  let badges = await user.getBadges()
+  t.not(originalBadges, badges, 'User#takeBadge did not take badges')
+  t.not(badges.length, originalBadges.length, 'User#giveBadge did not take badges')
+  t.deepEqual(badges, [8, 9], 'User#takeBadge did not take badges')
+})
