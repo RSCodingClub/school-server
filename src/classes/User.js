@@ -4,6 +4,8 @@ const log = require('../logger')
 let redisClient = require('../redis')
 const amqplib = require('../amqplib')
 
+const { REDIS_PREFIX, REDIS_DB } = process.env
+
 const User = class User {
   constructor (userId) {
     log.silly('user', 'new user(id: %d) constructed', userId)
@@ -13,7 +15,12 @@ const User = class User {
   }
   async delete () {
     log.silly('user', 'deleting user(id: %d)', this.id)
-    await promisify(redisClient.del).call(redisClient, `user:${this.id}`)
+    // Get all keys associated with the user, then remove prefix so delete finds them
+    // NOTE: 50 is an arbitrary number for the count of max number of keys to return, it should be small, but larger than expected
+    let keys = (await promisify(redisClient.scan).call(redisClient, [REDIS_DB || 0, 'MATCH', `${REDIS_PREFIX || 'school-server:'}user:${this.id}:*`, 'COUNT', 50]))[1]
+      .map(key => key.substr(REDIS_PREFIX || 'school-server:'.length))
+    // If any keys exist delete them
+    if (keys.length > 0) await promisify(redisClient.del).call(redisClient, keys)
 
     let channel = await this.amqpChannel
     await channel.assertQueue('user:name:updated', { durable: true })
