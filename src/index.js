@@ -12,6 +12,11 @@ const {
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
+app.use((request, response, next) => {
+  log.verbose('server', `${request.method}\t${request.path}`)
+  return next()
+})
+
 app.use('/', router)
 
 app.listen(PORT || 3000, function () {
