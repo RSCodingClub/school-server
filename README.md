@@ -104,6 +104,18 @@ The password to authorize the use of Redis commands.
 The namespace to use for the app (e.g. school-server:local)
 
 Defaults to: `school-server:`
+##### AMQP_HOST
+The ip or url of the host server for RabbitMQ.
+
+Defaults to: `127.0.0.1`
+##### AMQP_PORT
+The port to use AMQP over.
+
+Defaults to: `5672`
+##### AMQP_USER
+The user to authenticate with, will only be used if `AMQP_PASSWORD` is set.
+##### AMQP_PASSWORD
+The password for `AMQP_USER` to authenticate with.
 ##### LOG_LEVEL
 The level to output log messages.  See [npmlog](https://github.com/npm/npmlog#loglevelprefix-message-)
 ##### LOG_PREFIX
