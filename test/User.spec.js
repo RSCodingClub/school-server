@@ -166,3 +166,14 @@ test.serial('User can lose badges', async t => {
   t.not(badges.length, originalBadges.length, 'User#giveBadge did not take badges')
   t.deepEqual(badges, [8, 9], 'User#takeBadge did not take badges')
 })
+
+test('User can get leaderboard position', async t => {
+  let { user } = t.context
+  t.true(user.getLeaderboardIndex != null, 'User#getLeaderboardIndex is not defined')
+  t.is(typeof user.getLeaderboardIndex, 'function', 'User#getLeaderboardIndex is not a function')
+
+  let position = await user.getLeaderboardIndex()
+  t.false(isNaN(position), 'User#getLeaderboardIndex returned an unexpected position')
+  t.true(position >= -1, 'User#getLeaderboardIndex returned an unexpected position')
+  t.true(Math.floor(position) === position, 'User#getLeaderboardIndex returned an unexpected position')
+})
