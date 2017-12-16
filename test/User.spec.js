@@ -167,6 +167,25 @@ test.serial('User can lose badges', async t => {
   t.deepEqual(badges, [8, 9], 'User#takeBadge did not take badges')
 })
 
+test.serial('User can check its badges', async t => {
+  let { user } = t.context
+  t.true(user.hasBadge != null, 'User#hasBadge is not defined')
+  t.is(typeof user.hasBadge, 'function', 'User#hasBadge is not a function')
+
+  // Check if it throws on lack of BadgeID
+  let spy = sinon.spy()
+  await user.hasBadge().catch(spy)
+  t.true(spy.calledOnce)
+
+  await user.giveBadge([4, 8, 9])
+  t.true(await user.hasBadge(4), 'User#hasBadge returned an unexpected value')
+  t.true(await user.hasBadge(8), 'User#hasBadge returned an unexpected value')
+  t.true(await user.hasBadge(9), 'User#hasBadge returned an unexpected value')
+  t.false(await user.hasBadge(3), 'User#hasBadge returned an unexpected value')
+  t.false(await user.hasBadge(5), 'User#hasBadge returned an unexpected value')
+  t.false(await user.hasBadge(12), 'User#hasBadge returned an unexpected value')
+})
+
 test('User can get leaderboard position', async t => {
   let { user } = t.context
   t.true(user.getLeaderboardIndex != null, 'User#getLeaderboardIndex is not defined')

@@ -117,6 +117,7 @@ const User = class User {
   }
   async hasBadge (badgeId) {
     log.silly('user', 'checking if user(id: %d) has badge', this.id)
+    if (badgeId == null) throw new Error('BadgeID must be provided')
     let hasBadge = await promisify(redisClient.sismember).call(redisClient, `user:${this.id}:badges`, badgeId)
     return Boolean(Number(hasBadge))
   }
