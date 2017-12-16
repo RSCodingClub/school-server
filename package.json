@@ -4,7 +4,10 @@
   "description": "A school server to reward school event attendees",
   "main": "src/index.js",
   "scripts": {
-    "test": "./node_modules/.bin/eslint ."
+    "start": "node src/index.js",
+    "eslint": "./node_modules/.bin/eslint .",
+    "ava": "./node_modules/.bin/ava",
+    "test": "npm run eslint && npm run ava"
   },
   "keywords": [
     "school",
@@ -14,6 +17,11 @@
   ],
   "author": "Jeffrey Meyer <itotallyrock>",
   "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/RSCodingClub/school-server.git"
+  },
   "engines": {
     "node": ">=8.0.0"
   },
@@ -30,10 +38,14 @@
   },
   "devDependencies": {
     "eslint": "^4.10.0",
+    "ava": "^0.24.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-promise": "^3.6.0",
-    "eslint-plugin-standard": "^3.0.1"
+    "eslint-plugin-standard": "^3.0.1",
+    "redis-mock": "^0.20.0",
+    "rewire": "^3.0.2",
+    "sinon": "^4.1.3"
   }
 }

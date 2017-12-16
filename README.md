@@ -1,4 +1,6 @@
 # School (Student Council) Server
+[![Travis](https://img.shields.io/travis/RSCodingClub/school-server.svg?style=flat-square)](https://travis-ci.org/RSCodingClub/school-server) [![license](https://img.shields.io/github/license/RSCodingClub/school-server.svg?style=flat-square)](https://github.com/RSCodingClub/school-server/blob/master/LICENSE) [![David](https://img.shields.io/david/RSCodingClub/school-server.svg?style=flat-square)](https://david-dm.org/RSCodingClub/school-server)
+
 **Index**
 - [About](#about)
 - [Usage](#usage)
@@ -46,7 +48,7 @@ With a long todo-list it makes sense to just start fresh rather than piece by pi
 ### Installation
 Installation is simple if you want to use the latest cutting edge version.  Just clone the repo and viola.
 ```bash
-git clone git@github.com:itotallyrock/school-server.git
+git clone git@github.com:RSCodingClub/school-server.git
 ```
 After installation, you need to install dependencies by running
 ```bash
@@ -65,7 +67,7 @@ The port the webserver will listen on.
 
 Defaults to: `3000`
 ##### NODE_ENV
-The current Node environment.  Either `development` or `production`.
+The current Node environment.  Either `development`, `test`, or `production`.
 ##### GOOGLE_AUD
 Google JWT Audience for your application.
 ##### GOOGLE_SUITE_DOMAIN
@@ -102,3 +104,23 @@ The password to authorize the use of Redis commands.
 The namespace to use for the app (e.g. school-server:local)
 
 Defaults to: `school-server:`
+##### AMQP_HOST
+The ip or url of the host server for RabbitMQ.
+
+Defaults to: `127.0.0.1`
+##### AMQP_PORT
+The port to use AMQP over.
+
+Defaults to: `5672`
+##### AMQP_USER
+The user to authenticate with, will only be used if `AMQP_PASSWORD` is set.
+##### AMQP_PASSWORD
+The password for `AMQP_USER` to authenticate with.
+##### LOG_LEVEL
+The level to output log messages.  See [npmlog](https://github.com/npm/npmlog#loglevelprefix-message-)
+##### LOG_PREFIX
+The prefix/heading in front of all logged messages.
+
+Defaults to: `school-server`
+##### LOG_COLOR
+Whether to log output in color if set then, color output is enabled.

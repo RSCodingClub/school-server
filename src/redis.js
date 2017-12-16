@@ -1,5 +1,5 @@
-const log = require('npmlog')
 const redis = require('redis')
+const log = require('./logger')
 
 const {
   REDIS_HOST,
@@ -19,6 +19,18 @@ const redisClient = redis.createClient({
 
 redisClient.on('error', (error) => {
   log.error('redis', error)
+})
+
+redisClient.on('ready', () => {
+  log.info('redis', 'connected %s:%d', REDIS_HOST || '127.0.0.1', REDIS_PORT || 6379)
+})
+
+redisClient.on('end', () => {
+  log.info('redis', 'disconnected')
+})
+
+redisClient.on('warning', (warning) => {
+  log.warn('redis', warning)
 })
 
 module.exports = redisClient

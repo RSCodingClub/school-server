@@ -1,6 +1,6 @@
-const log = require('npmlog')
 const express = require('express')
 const bodyParser = require('body-parser')
+const log = require('./logger')
 const router = require('./router')
 
 const app = express()
@@ -11,6 +11,11 @@ const {
 // Middleware
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+
+app.use((request, response, next) => {
+  log.verbose('server', `${request.method}\t${request.path}`)
+  return next()
+})
 
 app.use('/', router)
 

@@ -15,6 +15,16 @@ if (!(NODE_ENV || 'production').startsWith('dev') && GOOGLE_AUD == null) {
 
 let router = Router({ mergerParams: true })
 router.use(jwt({
+  getToken: (request) => {
+    // If they have Authorization header
+    if (request.headers.authorization && request.headers.authorization.split(' ')[0] === 'Bearer') {
+      return request.headers.authorization.split(' ')[1]
+    // If they have the query parameter
+    } else if (request.query && request.query.token) {
+      return request.query.token
+    }
+    return null
+  },
   secret: jwksRsa.expressJwtSecret({
     cache: true,
     rateLimit: true,
