@@ -1,0 +1,8 @@
+interface Entity {
+  id: ID!
+  name: String
+}
+
+type Query {
+  status: String
+}

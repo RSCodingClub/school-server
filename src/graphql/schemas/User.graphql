@@ -1,0 +1,14 @@
+# A school server user
+type User implements Entity {
+  id: ID!
+  name: String
+  email: String
+  image: String
+  score: Int
+  badges(limit: Int, index: Int = 0): [Badge]!
+  rank: Int
+}
+
+type Query {
+  user(id: ID!): User
+}

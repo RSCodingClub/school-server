@@ -1,0 +1,12 @@
+# Badge for users to obtain
+type Badge implements Entity {
+  id: ID!
+  name: String
+  description: String
+  reward: Int
+}
+
+type Query {
+  badge(id: ID!): Badge
+  badges(limit: Int, index: Int = 0): [Badge]!
+}
