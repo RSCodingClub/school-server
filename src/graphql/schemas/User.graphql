@@ -1,11 +1,17 @@
 # A school server user
 type User implements Entity {
   id: ID!
+  # User's full name
   name: String
+  # User's email
   email: String
+  # URL to user's image
   image: String
+  # User's score
   score: Int
+  # Users badges
   badges(limit: Int, index: Int = 0): [Badge]!
+  # User's rank amongst other users based on score
   rank: Int
 }
 

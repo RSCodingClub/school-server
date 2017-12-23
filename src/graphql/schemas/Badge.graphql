@@ -1,8 +1,11 @@
 # Badge for users to obtain
 type Badge implements Entity {
   id: ID!
+  # Badge name
   name: String
+  # Badge description, how to get the badge
   description: String
+  # Badge reward, how many points the user should receive when obtained
   reward: Int
 }
 
