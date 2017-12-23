@@ -95,7 +95,7 @@ router.get('/', (request, response) => {
 router.use('/graphql', graphqlHTTP({
   schema: rootSchema.schema,
   rootValue: rootSchema.resolver,
-  graphiql: process.env.NODE_ENV === 'development'
+  graphiql: NODE_ENV === 'development'
 }))
 
 module.exports = router
