@@ -1,7 +1,8 @@
-
 const path = require('path')
 const { buildSchema } = require('graphql')
 const { fileLoader, mergeTypes } = require('merge-graphql-schemas')
+const userResolver = require('./graphql/User')
+const badgeResolver = require('./graphql/Badge')
 
 let schema = buildSchema(
   mergeTypes(
@@ -10,8 +11,10 @@ let schema = buildSchema(
 )
 
 let resolver = {
-  // TODO: Return server status
-  status: () => 'ok'
+  // TODO: Return services statuses for each api (badgeService: online, etc...)
+  status: 'ok',
+  badge: badgeResolver,
+  user: userResolver
 }
 
 module.exports.schema = schema
