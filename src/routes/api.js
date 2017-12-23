@@ -20,7 +20,7 @@ router.use(jwt({
     if (request.headers.authorization && request.headers.authorization.split(' ')[0] === 'Bearer') {
       return request.headers.authorization.split(' ')[1]
     // If they have the query parameter
-    } else if (request.query && request.query.token) {
+    } else if (NODE_ENV === 'development' && request.query && request.query.token) {
       return request.query.token
     }
     return null
