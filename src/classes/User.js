@@ -164,7 +164,7 @@ const User = class User {
   async getLeaderboardIndex () {
     log.silly('user', 'getting users(id: %d) rank', this.id)
     let rank = await promisify(redisClient.zrevrank).call(redisClient, 'leaderboard', this.id)
-    if (isNaN(rank)) return -1
+    if (isNaN(rank) || rank == null) return -1
     return Number(rank)
   }
 }
